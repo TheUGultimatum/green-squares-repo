@@ -1,0 +1,27 @@
+name: Green Squares
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # every day at 6 AM UTC
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Git identity
+        run: |
+          git config --global user.name "theugultimatum"
+          git config --global user.email "usmaangani253@gmail.com"
+
+      - name: Add Green Square
+        run: |
+          echo "$(date)" >> squares.txt
+          git add squares.txt
+          git commit -m "Green square on $(date)"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
